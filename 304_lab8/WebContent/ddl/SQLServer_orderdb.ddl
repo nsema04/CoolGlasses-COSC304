@@ -182,7 +182,7 @@ INSERT INTO product (productName, categoryId, productDesc, productPrice, product
 INSERT INTO product (productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('Compact Reading Glasses', 6, 'Foldable glasses for convenience', 9.65, 'https://m.media-amazon.com/images/I/61XIY0kz4GL._AC_SX679_.jpg');
 INSERT INTO product (productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('Stylish Clip-On Sunglasses', 8, 'Transforms your prescription glasses into sunglasses', 14.00, 'https://m.media-amazon.com/images/I/51pmJ9tdaxS._AC_SX679_.jpg');
 INSERT INTO product (productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('Anti-Glare Glasses', 2, 'Ideal for night driving and reducing glare', 21.05, 'https://m.media-amazon.com/images/I/61WpMUMcgYL._AC_SX679_.jpg');
-INSERT INTO product (productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('Polarized Outdoor Sunglasses', 1, 'Perfect for hiking and beach activities', 14.00, '
+INSERT INTO product (productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('Polarized Outdoor Sunglasses', 1, 'Perfect for hiking and beach activities', 14.00, 'https://m.media-amazon.com/images/I/61sZSOEbkhL._AC_UY1000_.jpg');
 
 INSERT INTO warehouse(warehouseName) VALUES ('Main warehouse');
 INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (1, 1, 5, 18);
