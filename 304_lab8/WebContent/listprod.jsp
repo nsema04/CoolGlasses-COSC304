@@ -74,16 +74,18 @@
             color: white;
         }
 
+        /* Subtle button style for product name links */
         a {
-            color: white;
-            background-color: #28a745; /* Green button */
-            padding: 5px 10px;
+            color: #007bff; /* Subtle blue color */
             text-decoration: none;
+            padding: 5px 10px;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
 
         a:hover {
-            background-color: #218838; /* Darker green on hover */
+            background-color: #e0f7ff; /* Light blue on hover */
+            color: #0056b3; /* Darker blue on hover */
         }
 
         .note {
@@ -146,7 +148,7 @@
                                 String categoryName = rs.getString("categoryName");
 
                                 out.println("<tr>");
-                                out.println("<td>" + productName + "</td>");
+                                out.println("<td><a href='product.jsp?id=" + productId + "'>" + productName + "</a></td>");
                                 out.println("<td>" + currFormat.format(productPrice) + "</td>");
                                 out.println("<td>" + categoryName + "</td>");
                                 out.println("<td><a href='addcart.jsp?id=" + productId +
