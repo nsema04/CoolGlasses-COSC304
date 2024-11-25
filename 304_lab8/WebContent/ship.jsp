@@ -9,28 +9,92 @@
 
 <html>
 <head>
-<title>YOUR NAME Grocery Shipment Processing</title>
+    <title>YOUR NAME Grocery Shipment Processing</title>
 </head>
 <body>
         
 <%@ include file="header.jsp" %>
 
 <%
-	// TODO: Get order id
-          
-	// TODO: Check if valid order id in database
-	
-	// TODO: Start a transaction (turn-off auto-commit)
-	
-	// TODO: Retrieve all items in order with given id
-	// TODO: Create a new shipment record.
-	// TODO: For each item verify sufficient quantity available in warehouse 1.
-	// TODO: If any item does not have sufficient inventory, cancel transaction and rollback. Otherwise, update inventory for each item.
-	
-	// TODO: Auto-commit should be turned back on
-%>                       				
+    // Get the order ID from the request parameters
+    String order = request.getParameter("orderId");
+    int orderId = Integer.parseInt(order);
+    boolean valid = false;
 
-<h2><a href="shop.html">Back to Main Page</a></h2>
+    // Database connection details
+    String url = "jdbc:sqlserver://cosc304_sqlserver:1433;DatabaseName=orders;TrustServerCertificate=True";
+    String uid = "sa";
+    String pw = "304#sa#pw";
+
+    try (Connection con = DriverManager.getConnection(url, uid, pw)) {
+        // Start transaction (turn off auto-commit)
+        con.setAutoCommit(false);
+
+        // Check if the orderId exists in the orderSummary table
+        String orderValidity = "SELECT * FROM orderSummary WHERE orderId = ?;";
+        PreparedStatement pstmt = con.prepareStatement(orderValidity);
+        pstmt.setInt(1, orderId);
+        ResultSet rst = pstmt.executeQuery();
+
+        if (!rst.next()) {
+            out.println("<h3>Invalid Order Id</h3>");
+        } else {
+            valid = true;
+        }
+
+        if (valid) {
+            // Retrieve all items in the order
+            String sql = "SELECT OP.productId, OP.quantity, PI.quantity FROM orderproduct OP " +
+                         "INNER JOIN productinventory PI ON OP.productId = PI.productId WHERE orderId = ?";
+            PreparedStatement pstmt2 = con.prepareStatement(sql);
+            pstmt2.setInt(1, orderId);
+            ResultSet rst2 = pstmt2.executeQuery();
+            boolean successful = true;
+
+            // Check inventory for each product in the order
+            while (rst2.next()) {
+                int pid = rst2.getInt(1);
+                int quantity = rst2.getInt(2);
+                int inventory = rst2.getInt(3);
+                if (inventory - quantity < 0) {
+                    out.println("<h2>Shipment not done. Insufficient inventory for product id: " + pid + "</h2>");
+                    successful = false;
+                    con.rollback();  // Rollback transaction if inventory is insufficient
+                    break;
+                } else {
+                    // Update inventory after successful verification
+                    out.println("<h3>Ordered product: " + pid + " Qty: " + quantity + 
+                                " Previous Quantity: " + inventory + " New Inventory: " + (inventory - quantity) + "</h3>");
+                    String updateInventory = "UPDATE productInventory SET quantity = ? WHERE productId = ?";
+                    PreparedStatement pstmt3 = con.prepareStatement(updateInventory);
+                    pstmt3.setInt(1, inventory - quantity);
+                    pstmt3.setInt(2, pid);
+                    pstmt3.executeUpdate();
+                }
+            }
+
+            if (successful) {
+                // Create a new shipment record
+                String orderDate = request.getParameter("orderDate");
+                String addShipment = "INSERT INTO shipment(shipmentDate, warehouseId) VALUES (?, 1)";
+                PreparedStatement pstmt4 = con.prepareStatement(addShipment);
+                pstmt4.setString(1, orderDate);
+                pstmt4.executeUpdate();
+                out.println("<h2>Shipment processed successfully</h2>");
+            }
+        }
+
+        // Commit the transaction if everything is successful
+        con.commit();
+        con.setAutoCommit(true);
+
+    } catch (Exception e) {
+        out.println("<p>" + e.toString() + "</p>");
+    }
+%>
+
+<h2><a href="index.jsp">Back to Main Page</a></h2>
 
 </body>
 </html>
+
