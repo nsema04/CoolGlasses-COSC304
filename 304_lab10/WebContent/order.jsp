@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Ray's Grocery Order Processing</title>
+<title>CoolGlasses Order Processing</title>
 </head>
 <body>
 
