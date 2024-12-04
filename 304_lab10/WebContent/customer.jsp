@@ -56,8 +56,14 @@ finally
 {	
 	closeConnection();	
 }
+
 %>
+
+<!-- Back to Home Button -->
+<button onclick="window.location.href='index.jsp'">Back to Home</button>
+
+<!-- Edit Account Link -->
+<a href="editAccount.jsp">Edit Account</a>
 
 </body>
 </html>
-

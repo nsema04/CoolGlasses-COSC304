@@ -5,7 +5,7 @@
 
 <html>
 <head>
-<title>Ray's Grocery</title>
+<title>CoolGlasses</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -35,14 +35,14 @@ catch (SQLException ex)
 */
 %>
 
-  <option>Beverages</option>
-  <option>Condiments</option>
-  <option>Confections</option>
-  <option>Dairy Products</option>
-  <option>Grains/Cereals</option>
-  <option>Meat/Poultry</option>
-  <option>Produce</option>
-  <option>Seafood</option>       
+  <option>Sunglasses</option>
+  <option>Prescription Glasses</option>
+  <option>Reading Glasses</option>
+  <option>Blue Light Glasses</option>
+  <option>Sports Glasses</option>
+  <option>Safety Glasses</option>
+  <option>Fashion Glasses</option>
+  <option>Kids Glasses</option>       
   </select>
   <input type="text" name="productName" size="50">
   <input type="submit" value="Submit"><input type="reset" value="Reset"></p>
@@ -51,14 +51,14 @@ catch (SQLException ex)
 <%
 // Colors for different item categories
 HashMap<String,String> colors = new HashMap<String,String>();		// This may be done dynamically as well, a little tricky...
-colors.put("Beverages", "#0000FF");
-colors.put("Condiments", "#FF0000");
-colors.put("Confections", "#000000");
-colors.put("Dairy Products", "#6600CC");
-colors.put("Grains/Cereals", "#55A5B3");
-colors.put("Meat/Poultry", "#FF9900");
-colors.put("Produce", "#00CC00");
-colors.put("Seafood", "#FF66CC");
+colors.put("Sunglasses", "#0000FF");
+colors.put("Prescription Glasses", "#FF0000");
+colors.put("Reading Glasses", "#000000");
+colors.put("Blue Light Glasses", "#6600CC");
+colors.put("Sports Glasses", "#55A5B3");
+colors.put("Safety Glasses", "#FF9900");
+colors.put("Fashion Glasses", "#00CC00");
+colors.put("Kids Glasses", "#FF66CC");
 %>
 
 <%
