@@ -263,3 +263,4 @@ UPDATE Product SET productImageURL = 'img/24.jpg' WHERE ProductId = 24;
 UPDATE Product SET productImageURL = 'img/25.jpg' WHERE ProductId = 25;
 UPDATE Product SET productImageURL = 'img/26.jpg' WHERE ProductId = 26;
 UPDATE Product SET productImageURL = 'img/27.jpg' WHERE ProductId = 27;
+UPDATE Product SET productImageURL = 'img/28.jpg' WHERE ProductId = 28;
