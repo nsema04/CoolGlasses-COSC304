@@ -24,10 +24,10 @@
 // Could create category list dynamically - more adaptable, but a little more costly
 try               
 {
-	getConnection();
- 	ResultSet rst = executeQuery("SELECT DISTINCT categoryName FROM Product");
+    getConnection();
+    ResultSet rst = executeQuery("SELECT DISTINCT categoryName FROM Product");
         while (rst.next()) 
-		out.println("<option>"+rst.getString(1)+"</option>");
+        out.println("<option>"+rst.getString(1)+"</option>");
 }
 catch (SQLException ex)
 {       out.println(ex);
@@ -50,7 +50,7 @@ catch (SQLException ex)
 
 <%
 // Colors for different item categories
-HashMap<String,String> colors = new HashMap<String,String>();		// This may be done dynamically as well, a little tricky...
+HashMap<String,String> colors = new HashMap<String,String>();       // This may be done dynamically as well, a little tricky...
 colors.put("Sunglasses", "#0000FF");
 colors.put("Prescription Glasses", "#FF0000");
 colors.put("Reading Glasses", "#000000");
@@ -72,25 +72,25 @@ String filter = "", sql = "";
 
 if (hasNameParam && hasCategoryParam)
 {
-	filter = "<h3>Products containing '"+name+"' in category: '"+category+"'</h3>";
-	name = '%'+name+'%';
-	sql = "SELECT productId, productName, productPrice, categoryName FROM Product P JOIN Category C ON P.categoryId = C.categoryId WHERE productName LIKE ? AND categoryName = ?";
+    filter = "<h3>Products containing '"+name+"' in category: '"+category+"'</h3>";
+    name = '%'+name+'%';
+    sql = "SELECT P.productId, P.productName, P.productPrice, C.categoryName, P.productImageURL, SUM(OP.quantity) AS totalSales FROM Product P JOIN Category C ON P.categoryId = C.categoryId LEFT JOIN OrderProduct OP ON P.productId = OP.productId WHERE P.productName LIKE ? AND C.categoryName = ? GROUP BY P.productId, P.productName, P.productPrice, C.categoryName, P.productImageURL ORDER BY totalSales DESC";
 }
 else if (hasNameParam)
 {
-	filter = "<h3>Products containing '"+name+"'</h3>";
-	name = '%'+name+'%';
-	sql = "SELECT productId, productName, productPrice, categoryName FROM Product P JOIN Category C ON P.categoryId = C.categoryId WHERE productName LIKE ?";
+    filter = "<h3>Products containing '"+name+"'</h3>";
+    name = '%'+name+'%';
+    sql = "SELECT P.productId, P.productName, P.productPrice, C.categoryName, P.productImageURL, SUM(OP.quantity) AS totalSales FROM Product P JOIN Category C ON P.categoryId = C.categoryId LEFT JOIN OrderProduct OP ON P.productId = OP.productId WHERE P.productName LIKE ? GROUP BY P.productId, P.productName, P.productPrice, C.categoryName, P.productImageURL ORDER BY totalSales DESC";
 }
 else if (hasCategoryParam)
 {
-	filter = "<h3>Products in category: '"+category+"'</h3>";
-	sql = "SELECT productId, productName, productPrice, categoryName FROM Product P JOIN Category C ON P.categoryId = C.categoryId WHERE categoryName = ?";
+    filter = "<h3>Products in category: '"+category+"'</h3>";
+    sql = "SELECT P.productId, P.productName, P.productPrice, C.categoryName, P.productImageURL, SUM(OP.quantity) AS totalSales FROM Product P JOIN Category C ON P.categoryId = C.categoryId LEFT JOIN OrderProduct OP ON P.productId = OP.productId WHERE C.categoryName = ? GROUP BY P.productId, P.productName, P.productPrice, C.categoryName, P.productImageURL ORDER BY totalSales DESC";
 }
 else
 {
-	filter = "<h3>All Products</h3>";
-	sql = "SELECT productId, productName, productPrice, categoryName FROM Product P JOIN Category C ON P.categoryId = C.categoryId";
+    filter = "<h3>All Products</h3>";
+    sql = "SELECT P.productId, P.productName, P.productPrice, C.categoryName, P.productImageURL, SUM(OP.quantity) AS totalSales FROM Product P JOIN Category C ON P.categoryId = C.categoryId LEFT JOIN OrderProduct OP ON P.productId = OP.productId GROUP BY P.productId, P.productName, P.productPrice, C.categoryName, P.productImageURL ORDER BY totalSales DESC";
 }
 
 out.println(filter);
@@ -99,51 +99,52 @@ NumberFormat currFormat = NumberFormat.getCurrencyInstance();
 
 try 
 {
-	getConnection();
-	Statement stmt = con.createStatement(); 			
-	stmt.execute("USE orders");
-	
-	PreparedStatement pstmt = con.prepareStatement(sql);
-	if (hasNameParam)
-	{
-		pstmt.setString(1, name);	
-		if (hasCategoryParam)
-		{
-			pstmt.setString(2, category);
-		}
-	}
-	else if (hasCategoryParam)
-	{
-		pstmt.setString(1, category);
-	}
-	
-	ResultSet rst = pstmt.executeQuery();
-	
-	out.print("<font face=\"Century Gothic\" size=\"2\"><table class=\"table\" border=\"1\"><tr><th class=\"col-md-1\"></th><th>Product Name</th>");
-	out.println("<th>Category</th><th>Price</th></tr>");
-	while (rst.next()) 
-	{
-		int id = rst.getInt(1);
-		out.print("<td class=\"col-md-1\"><a href=\"addcart.jsp?id=" + id + "&name=" + rst.getString(2)
-				+ "&price=" + rst.getDouble(3) + "\">Add to Cart</a></td>");
+    getConnection();
+    Statement stmt = con.createStatement();             
+    stmt.execute("USE orders");
+    
+    PreparedStatement pstmt = con.prepareStatement(sql);
+    if (hasNameParam)
+    {
+        pstmt.setString(1, name);   
+        if (hasCategoryParam)
+        {
+            pstmt.setString(2, category);
+        }
+    }
+    else if (hasCategoryParam)
+    {
+        pstmt.setString(1, category);
+    }
+    
+    ResultSet rst = pstmt.executeQuery();
+    
+    out.print("<font face=\"Century Gothic\" size=\"2\"><table class=\"table\" border=\"1\"><tr><th class=\"col-md-1\"></th><th>Product Name</th>");
+    out.println("<th>Category</th><th>Price</th><th>Total Sales</th><th>Image</th></tr>");
+    while (rst.next()) 
+    {
+        int id = rst.getInt(1);
+        out.print("<td class=\"col-md-1\"><a href=\"addcart.jsp?id=" + id + "&name=" + rst.getString(2)
+                + "&price=" + rst.getDouble(3) + "\">Add to Cart</a></td>");
 
-		String itemCategory = rst.getString(4);
-		String color = (String) colors.get(itemCategory);
-		if (color == null)
-			color = "#FFFFFF";
+        String itemCategory = rst.getString(4);
+        String color = colors.get(itemCategory);
+        if (color == null)
+            color = "#FFFFFF";
 
-		out.println("<td><a href=\"product.jsp?id="+id+"\"<font color=\"" + color + "\">" + rst.getString(2) + "</font></td>"
-				+ "<td><font color=\"" + color + "\">" + itemCategory + "</font></td>"
-				+ "<td><font color=\"" + color + "\">" + currFormat.format(rst.getDouble(3))
-				+ "</font></td></tr>");
-	}
-	out.println("</table></font>");
-	closeConnection();
+        out.println("<td><a href=\"product.jsp?id="+id+"\"<font color=\"" + color + "\">" + rst.getString(2) + "</font></td>"
+                + "<td><font color=\"" + color + "\">" + itemCategory + "</font></td>"
+                + "<td><font color=\"" + color + "\">" + currFormat.format(rst.getDouble(3))
+                + "</font></td>"
+                + "<td><font color=\"" + color + "\">" + rst.getInt(6) + "</font></td>"
+                + "<td><img src=\"" + rst.getString(5) + "\" alt=\"" + rst.getString(2) + "\" style=\"width:100px;height:auto;\"></td></tr>");
+    }
+    out.println("</table></font>");
+    closeConnection();
 } catch (SQLException ex) {
-	out.println(ex);
+    out.println(ex);
 }
 %>
 
 </body>
 </html>
-
