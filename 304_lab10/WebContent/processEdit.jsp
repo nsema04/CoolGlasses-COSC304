@@ -1,163 +1,115 @@
 <%@ page language="java" import="java.io.*,java.sql.*"%>
 <%@ include file="jdbc.jsp" %>
 <%
-	String oldUsername = (String) session.getAttribute("authenticatedUser");
-	session = request.getSession(true);
-	String userType = (String)session.getAttribute("userType");
+    String oldUsername = (String) session.getAttribute("authenticatedUser");
+    session = request.getSession(true);
+    String userType = (String) session.getAttribute("userType");
     String authenticatedUser = null;
 
-	try
-	{
-		authenticatedUser = validateLogin(out,request,session, userType, oldUsername);
-	}
-	catch(IOException e)
-	{	System.err.println(e); }
+    try {
+        authenticatedUser = validateLogin(out, request, session, userType, oldUsername);
+    } catch (IOException e) {
+        System.err.println(e);
+    }
 
-    if(authenticatedUser == null){
+    // Redirecting to appropriate pages based on the result
+    if (authenticatedUser == null) {
         response.sendRedirect("failedChange.jsp?param=itsnull");
-    }else if(authenticatedUser.equals("error"))
+    } else if (authenticatedUser.equals("error")) {
         response.sendRedirect("failedChange.jsp?param=error");
-    else if(authenticatedUser.equals("blank"))
+    } else if (authenticatedUser.equals("blank")) {
         response.sendRedirect("failedChange.jsp?param=blank");
-	else if(authenticatedUser.equals("taken"))
+    } else if (authenticatedUser.equals("taken")) {
         response.sendRedirect("failedChange.jsp?param=taken");
-    else if(authenticatedUser.equals("diff")){
+    } else if (authenticatedUser.equals("diff")) {
         response.sendRedirect("failedChange.jsp?param=diff");
-    } else
+    } else {
         response.sendRedirect("customer.jsp");
+    }
 %>
 
-
 <%!
-	String validateLogin(JspWriter out,HttpServletRequest request, HttpSession session, String userType, String oldUsername) throws IOException
-	{
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+    // Function to validate and update customer data
+    String validateLogin(JspWriter out, HttpServletRequest request, HttpSession session, String userType, String oldUsername) throws IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
         String password2 = request.getParameter("password2");
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
         String email = request.getParameter("email");
-		String retStr = null;
+        String retStr = null;
 
-        
-                try
-                {	// Load driver class
-                    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                }
-                catch (java.lang.ClassNotFoundException e)
-                {
-                    out.println("ClassNotFoundException: " +e);
-                }
-                
-                String url = "jdbc:sqlserver://cosc304_sqlserver:1433;DatabaseName=orders;TrustServerCertificate=True";
-                String uid = "sa";
-                String pw = "304#sa#pw";
+        try {
+            // Load the JDBC driver
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        } catch (ClassNotFoundException e) {
+            out.println("ClassNotFoundException: " + e);
+        }
 
-		try(Connection con = DriverManager.getConnection(url, uid, pw);)
-		{
-                String get = "SELECT * FROM customer WHERE userId = ?";
-                PreparedStatement pstmtGet = con.prepareStatement(get);
-                pstmtGet.setString(1, oldUsername);
-                ResultSet rstGet = pstmtGet.executeQuery();
-                rstGet.next();
+        String url = "jdbc:sqlserver://cosc304_sqlserver:1433;DatabaseName=orders;TrustServerCertificate=True";
+        String uid = "sa";
+        String pw = "304#sa#pw";
 
+        try (Connection con = DriverManager.getConnection(url, uid, pw)) {
+            String getQuery = "SELECT * FROM customer WHERE userId = ?";
+            PreparedStatement pstmtGet = con.prepareStatement(getQuery);
+            pstmtGet.setString(1, oldUsername);
+            ResultSet rstGet = pstmtGet.executeQuery();
+
+            if (rstGet.next()) {
+                // Fetching old values
                 String oldPass = rstGet.getString("password");
                 String oldFirst = rstGet.getString("firstName");
                 String oldLast = rstGet.getString("lastName");
                 String oldEmail = rstGet.getString("email");
-                boolean emailCheck = true;
-                boolean userNameCheck = true;
 
-                if(username == null){
-                    username = oldUsername;
-                    userNameCheck = false;
-                }
-                if(password == null){
-                    password = oldPass;
-                    password2 = oldPass;
-                }
-                if(password2 == null){
-                    password = oldPass;
-                    password2 = oldPass;
-                }
-                if(firstname == null){
-                    firstname = oldFirst;
-                }
-                if(lastname == null){
-                    lastname = oldLast;
-                }
-                if(email == null){
-                    email = oldEmail;
-                    emailCheck = false;
+                // Fallback to old values if no input provided
+                if (username == null || username.isEmpty()) username = oldUsername;
+                if (password == null || password.isEmpty()) password = oldPass;
+                if (password2 == null || password2.isEmpty()) password2 = oldPass;
+                if (firstname == null || firstname.isEmpty()) firstname = oldFirst;
+                if (lastname == null || lastname.isEmpty()) lastname = oldLast;
+                if (email == null || email.isEmpty()) email = oldEmail;
+                else email += request.getParameter("domain");
+
+                // Check if new username is taken
+                if (!username.equals(oldUsername)) {
+                    String checkUserSQL = "SELECT customerId FROM customer WHERE userId = ?";
+                    PreparedStatement checkUserStmt = con.prepareStatement(checkUserSQL);
+                    checkUserStmt.setString(1, username);
+                    ResultSet userResult = checkUserStmt.executeQuery();
+                    if (userResult.next()) return "taken";
                 }
 
+                // Validate passwords
+                if (!password.equals(password2)) return "diff";
 
-                if(username.length() == 0){
-                    username = oldUsername;
-                    userNameCheck = false;
-                }
-                if(password.length() == 0){
-                    password = oldPass;
-                    password2 = oldPass;
-                }
-                if(password2.length() == 0){
-                    password = oldPass;
-                    password2 = oldPass;
-                }
-                if(firstname.length() == 0){
-                    firstname = oldFirst;
-                }
-                if(lastname.length() == 0){
-                    lastname = oldLast;
-                }
-                if(email.length() == 0){
-                    email = oldEmail;
-                    emailCheck = false;
-                }
-                // TODO: Check if userId and password match some customer account. If so, set retStr to be the username.
-                if(userNameCheck){
-				String SQL = "SELECT customerId FROM customer WHERE userId = ?";
-				PreparedStatement pstmt = con.prepareStatement(SQL);
-				pstmt.setString(1, username);
+                // Update customer information
+                String updateSQL = "UPDATE customer SET firstName = ?, lastName = ?, email = ?, userId = ?, password = ? WHERE userId = ?";
+                PreparedStatement updateStmt = con.prepareStatement(updateSQL);
+                updateStmt.setString(1, firstname);
+                updateStmt.setString(2, lastname);
+                updateStmt.setString(3, email);
+                updateStmt.setString(4, username);
+                updateStmt.setString(5, password);
+                updateStmt.setString(6, oldUsername);
+                updateStmt.executeUpdate();
 
-				ResultSet rst = pstmt.executeQuery();
-                
-
-				if(rst.next()){
-					return "taken";
-				}
-                }   
-                if(emailCheck){
-                    email += request.getParameter("domain");
-                }
-		
-                if(!password.equals(password2)){
-                    return "diff";
-                }
-
-                String sql2 = "UPDATE customer SET firstName = ?, lastName = ?, email = ?, userid = ?, password = ? WHERE userid = ?";
-                PreparedStatement pstmt2 = con.prepareStatement(sql2);
-                pstmt2.setString(1, firstname);
-                pstmt2.setString(2, lastname);
-                pstmt2.setString(3, email);
-                pstmt2.setString(4, username);
-                pstmt2.setString(5, password);
-                pstmt2.setString(6, oldUsername);
-                pstmt2.executeUpdate();
                 retStr = username;
-					
-		}  catch(Exception e){
-            return "aaaaaaaaaa" + e.toString();
+            }
+        } catch (Exception e) {
+            out.println("Error: " + e);
+            return "error";
         }
-		
-		if(retStr != null)
-		{	session.removeAttribute("loginMessage");
-			if(userType.equals("customer"))
-				session.setAttribute("authenticatedUser",username);
-		}
-		else
-			session.setAttribute("loginMessage","Try Again.");
 
-		return retStr;
-	}
+        // Update session attributes
+        if (retStr != null) {
+            session.removeAttribute("loginMessage");
+            if (userType.equals("customer")) session.setAttribute("authenticatedUser", username);
+        } else {
+            session.setAttribute("loginMessage", "Try Again.");
+        }
+
+        return retStr;
+    }
 %>

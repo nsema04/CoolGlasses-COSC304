@@ -69,6 +69,11 @@
         <br>
         <input type="submit" value="Update Cart" />
         </form>
+
+        <!-- Add Checkout Button -->
+        <div>
+            <button onclick="window.location.href='checkout.jsp';">Checkout</button>
+        </div>
 <%
     }
 %>

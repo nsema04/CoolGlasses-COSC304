@@ -1,74 +1,97 @@
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CoolGlasses - Login</title>
+    <style>
+        /* Header styling */
+        .header {
+            background-color: #3399FF;
+            color: white;
+            padding: 10px 20px;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 0 15px;
+        }
+
+        .header a:hover {
+            text-decoration: underline;
+        }
+
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            font-family: cursive;
+        }
+
+        .header .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header .user-info {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .button {
+            padding: 8px 15px;
+            background-color: white;
+            color: #3399FF;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #f1f1f1;
+        }
+
+        .header .button {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
+    <!-- Header Section -->
+    <div class="header">
+        <!-- Logo -->
+        <div class="logo">
+            <a href="shop.jsp">CoolGlasses</a>
+        </div>
 
-<!-- Header Section -->
-<H1 align="center">
-    <font face="cursive" color="#3399FF">
-        <a href="index.jsp">CoolGlasses</a>
-    </font>
-</H1>
-<hr>
-
-<%
-    // Check if the user is authenticated and retrieve their username
-    String userName = (String) session.getAttribute("authenticatedUser");
-    if (userName != null) {
-%>
-    <h3 align="center">Signed in as: <%= userName %></h3>
-    <!-- Navigation Menu for logged-in users -->
-    <div style="text-align: center; margin-top: 10px;">
-        <button onclick="window.location.href='index.jsp'" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
-            Back to Home
-        </button>
-        <button onclick="window.location.href='seeCart.jsp'" style="padding: 10px 20px; font-size: 16px; cursor: pointer; margin-left: 10px;">
-            See Cart
-        </button>
-        <button onclick="window.location.href='logout.jsp'" style="padding: 10px 20px; font-size: 16px; cursor: pointer; margin-left: 10px;">
-            Log Out
-        </button>
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <a href="shop.jsp">Home</a>
+            <a href="listprod.jsp">Shop</a>
+            <a href="seeCart.jsp">Cart</a>
+            <% 
+                // Dynamic user info and login/logout button
+                String userName = (String) session.getAttribute("authenticatedUser");
+                if (userName != null) { 
+            %>
+                <span class="user-info">
+                    Welcome, <a href="customer.jsp" style="color: white; text-decoration: underline;"><%= userName %></a>!
+                </span>
+                <button class="button" onclick="window.location.href='logout.jsp'">Log Out</button>
+            <% 
+                } else { 
+            %>
+                <button class="button" onclick="window.location.href='login.jsp'">Log In</button>
+            <% 
+                } 
+            %>
+        </div>
     </div>
-<%
-    } else {
-%>
-    <!-- Login Form for users not logged in -->
-    <div style="margin:0 auto;text-align:center;display:inline">
-        <h3>Please Login to System</h3>
-
-        <%-- Print prior error login message if present --%>
-        <%
-            if (session.getAttribute("loginMessage") != null)
-                out.println("<p>" + session.getAttribute("loginMessage").toString() + "</p>");
-        %>
-
-        <br>
-        <form name="MyForm" method="post" action="validateLogin.jsp">
-            <table style="display:inline">
-                <tr>
-                    <td><div align="right"><font face="Arial, Helvetica, sans-serif" size="2">Username:</font></div></td>
-                    <td><input type="text" name="username" size="10" maxlength="10"></td>
-                </tr>
-                <tr>
-                    <td><div align="right"><font face="Arial, Helvetica, sans-serif" size="2">Password:</font></div></td>
-                    <td><input type="password" name="password" size="10" maxlength="10"></td>
-                </tr>
-            </table>
-            <br/>
-            <input class="submit" type="submit" name="Submit2" value="Log In">
-        </form>
-
-        <br/>
-        <!-- Sign Up Link -->
-        <p><a href="signup.jsp" style="font-size: 14px;">No account? Sign Up Here</a></p>
-    </div>
-<%
-    }
-%>
-
-<hr>
-
 </body>
 </html>

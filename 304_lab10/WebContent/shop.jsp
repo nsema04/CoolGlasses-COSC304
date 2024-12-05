@@ -1,41 +1,18 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ include file="header.jsp" %> <!-- Include header.jsp -->
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CoolGlasses - Home</title>
+    <title>CoolGlasses - Shop</title>
     <style>
-        /* General styles */
+        /* Add your custom styles for the shop page here */
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #87cefa, #ffffff);
             color: #333;
-        }
-
-        /* Navbar styling */
-        .navbar {
-            background-color: #2c3e50;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            font-size: 1rem;
-        }
-
-        .navbar a:hover {
-            background-color: #34495e;
-            border-radius: 5px;
-        }
-
-        .navbar .right {
-            display: flex;
-            gap: 10px;
         }
 
         /* Main container */
@@ -93,9 +70,9 @@
 
     <!-- Main Content -->
     <div class="container">
-        <h1>Welcome to CoolGlasses</h1>
-        <p>Your one-stop shop for stylish and functional eyewear!</p>
-        <a href="listprod.jsp" class="button">Start Shopping</a>
+        <h1>Shop for CoolGlasses</h1>
+        <p>Find the perfect eyewear for you!</p>
+        <!-- Add your products or shopping-related content here -->
     </div>
 
     <!-- Footer -->
