@@ -42,7 +42,7 @@
 </tr>
 <tr>
 	<td><div align="right"><font face="Arial, Helvetica, sans-serif" size="2">Phone:</font></div></td>
-	<td><input type="text" name="phone" size="14" maxlength="14"></td>
+	<td><input type="text" name="phonenum" size="14" maxlength="14"></td>
 </tr>
 <tr>
 	<td><div align="right"><font face="Arial, Helvetica, sans-serif" size="2">Address:</font></div></td>

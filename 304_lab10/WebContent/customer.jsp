@@ -62,8 +62,12 @@ finally
 <!-- Back to Home Button -->
 <button onclick="window.location.href='shop.jsp'">Back to Home</button>
 
-<!-- Edit Account Link -->
-<a href="editAccount.jsp">Edit Account</a>
+<!-- Edit Account Button -->
+<button onclick="window.location.href='editAccount.jsp'">Edit Account</button>
+
+
+<!-- View My Orders Button -->
+<button onclick="window.location.href='customerOrders.jsp'">View My Orders</button>
 
 </body>
 </html>

@@ -6,7 +6,7 @@
 <head>
     <title>CoolGlasses - Shop</title>
     <style>
-        /* Add your custom styles for the shop page here */
+        /* Add custom styles for the shop page here */
         body {
             margin: 0;
             padding: 0;
