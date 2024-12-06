@@ -26,10 +26,8 @@
             text-decoration: underline;
         }
 
-        .header .logo {
-            font-size: 24px;
-            font-weight: bold;
-            font-family: cursive;
+        .header .logo img {
+            height: 40px;
         }
 
         .header .nav-links {
@@ -54,13 +52,12 @@
 
             <!-- Logo -->
             <div class="logo">
-                <a href="shop.jsp">CoolGlasses</a>
+                <a href="shop.jsp"><img src="img/logo.png" alt="CoolGlasses"></a>
             </div>
         </div>
 
         <!-- Right Section: Navigation Links and User Info -->
         <div class="nav-links">
-            <a href="shop.jsp">Home</a>
             <a href="listprod.jsp">Shop</a>
             <a href="seeCart.jsp">Cart</a>
             <% 
