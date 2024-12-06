@@ -16,8 +16,6 @@
     int rating = Integer.parseInt(request.getParameter("rating"));
     String comment = request.getParameter("comment");
 
-    out.println("<p>Debug Info: productId = " + productId + ", userId = " + userId + ", rating = " + rating + ", comment = " + comment + "</p>");
-
     try {
         getConnection();
         Statement stmt = con.createStatement();
@@ -31,19 +29,31 @@
         rst3.next();
         int custId = rst3.getInt("customerId");
 
-        out.println("<p>Debug Info: custId = " + custId + "</p>");
+        // Check if the user has already reviewed this product
+        String checkSql = "SELECT COUNT(*) FROM review WHERE productId = ? AND customerId = ?";
+        PreparedStatement checkPstmt = con.prepareStatement(checkSql);
+        checkPstmt.setInt(1, Integer.parseInt(productId));
+        checkPstmt.setInt(2, custId);
+        ResultSet checkRst = checkPstmt.executeQuery();
+        checkRst.next();
+        int reviewCount = checkRst.getInt(1);
 
-        // Insert review
-        String sql = "INSERT INTO review (productId, customerId, reviewRating, reviewDate, reviewComment) VALUES (?, ?, ?, GETDATE(), ?)";
-        PreparedStatement pstmt = con.prepareStatement(sql);
-        pstmt.setInt(1, Integer.parseInt(productId));
-        pstmt.setInt(2, custId);
-        pstmt.setInt(3, rating);
-        pstmt.setString(4, comment);
-        pstmt.executeUpdate();
+        if (reviewCount > 0) {
+            out.println("<h1>You have already reviewed this product.</h1>");
+            out.println("<h1><a href='product.jsp?id=" + productId + "'>Back to Product</a></h1>");
+        } else {
+            // Insert review
+            String sql = "INSERT INTO review (productId, customerId, reviewRating, reviewDate, reviewComment) VALUES (?, ?, ?, GETDATE(), ?)";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, Integer.parseInt(productId));
+            pstmt.setInt(2, custId);
+            pstmt.setInt(3, rating);
+            pstmt.setString(4, comment);
+            pstmt.executeUpdate();
 
-        out.println("<h1>Review submitted successfully!</h1>");
-        out.println("<h1><a href='product.jsp?id=" + productId + "'>Back to Product</a></h1>");
+            out.println("<h1>Review submitted successfully!</h1>");
+            out.println("<h1><a href='product.jsp?id=" + productId + "'>Back to Product</a></h1>");
+        }
     } catch (SQLException ex) {
         out.println("<p>Error submitting review: " + ex.getMessage() + "</p>");
     } finally {
