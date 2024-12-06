@@ -124,7 +124,6 @@
             %>
         </div>
 
-        <button onclick="window.location.href='admin.jsp'" class="btn btn-secondary mt-4">Back to Admin</button>
     </div>
 </div>
 

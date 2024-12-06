@@ -139,7 +139,7 @@ else
             pstmt.setInt(4, num);
             pstmt.executeUpdate();
 
-            out.println("<h2><a href=\"shop.html\">Return to shopping</a></h2>");
+            out.println("<h2><a href=\"shop.jsp\">Return to shopping</a></h2>");
             
             // Clear session variables (cart)
             session.setAttribute("productList", null);

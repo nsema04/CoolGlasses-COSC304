@@ -2,7 +2,83 @@
 <html>
 <head>
 <title>Your Orders</title>
-<link rel="stylesheet" href="style.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    h3 {
+        text-align: center;
+        color: #333;
+        margin-top: 20px;
+    }
+
+    table {
+        width: 90%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    td {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover td {
+        background-color: #e0e0e0;
+    }
+
+    .product-table {
+        width: 100%;
+        margin-top: 10px;
+        border: none;
+        background-color: #f9f9f9;
+        box-shadow: none;
+    }
+
+    .product-table th, .product-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .product-table th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+
+    .back-btn {
+        display: block;
+        width: 200px;
+        margin: 30px auto;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        text-align: center;
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .back-btn:hover {
+        background-color: #45a049;
+    }
+</style>
 </head>
 <body>
 
@@ -36,7 +112,7 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
     String orders = "SELECT orderId, orderDate, customerId, totalAmount, shiptoAddress, shiptoCity, shiptoState, shiptoPostalCode, shiptoCountry FROM ordersummary WHERE customerId = ?";
     PreparedStatement pstmtZ = con.prepareStatement(orders);
     pstmtZ.setInt(1, custIdY);
-    out.println("<table border=\"1\"><tr><th>Order Date</th><th>Customer Name</th><th>Total Amount</th><th>Shipping Address</th><th>Shipping City</th><th>Shipping State</th><th>Shipping Postal Code</th><th>Shipping Country</th></tr>");
+    out.println("<table><tr><th>Order Date</th><th>Customer Name</th><th>Total Amount</th><th>Shipping Address</th><th>Shipping City</th><th>Shipping State</th><th>Shipping Postal Code</th><th>Shipping Country</th></tr>");
     ResultSet rst = pstmtZ.executeQuery();
     String customerInfo = "SELECT firstName, lastName FROM customer WHERE customerId = ?";
     String prods = "SELECT OP.productId, OP.quantity, OP.price, P.productName " +
@@ -66,7 +142,7 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
         out.println("<td>" + shiptoAddress + "</td><td>" + shiptoCity + "</td><td>" + shiptoState + "</td><td>" + shiptoPostalCode + "</td><td>" + shiptoCountry + "</td></tr>");
 
         ResultSet rst3 = prodInfo.executeQuery();
-        out.println("<tr align=\"right\"><td colspan=\"8\"><table border=\"1\"><tr><th>Product Id</th><th>Quantity</th><th>Price</th></tr>");
+        out.println("<tr><td colspan=\"8\"><table class=\"product-table\"><tr><th>Product Id</th><th>Quantity</th><th>Price</th></tr>");
         while (rst3.next()) {
             int prodId = rst3.getInt("productId");
             String prodName = rst3.getString("productName");
@@ -90,7 +166,7 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 %>
 
 <!-- Back to Customer Page Button -->
-<button onclick="window.location.href='customer.jsp'">Back to Customer Page</button>
+<button class="back-btn" onclick="window.location.href='customer.jsp'">Back to Customer Page</button>
 
 </body>
 </html>
