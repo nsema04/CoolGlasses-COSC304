@@ -6,50 +6,68 @@
 <head>
     <title>CoolGlasses - Shop</title>
     <style>
-        /* Add custom styles for the shop page here */
+        /* General body and layout styling */
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #87cefa, #ffffff);
             color: #333;
+            height: 100%;
+        }
+
+        /* Header style */
+        header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
         }
 
         /* Main container */
         .container {
             max-width: 900px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f9f9f9;
+            margin: 80px auto 50px auto; /* Adjusted for space below fixed header */
+            padding: 40px;
+            background-color: #ffffff;
             border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
         }
 
         h1 {
-            font-size: 3rem;
-            margin: 20px 0;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
             color: #2c3e50;
         }
 
         p {
-            font-size: 1.2rem;
-            margin: 20px 0;
+            font-size: 1.4rem;
+            margin-bottom: 30px;
             color: #666;
         }
 
+        /* Button styling */
         .button {
             display: inline-block;
-            padding: 15px 30px;
-            margin: 20px;
-            font-size: 1.2rem;
+            padding: 15px 40px;
+            font-size: 1.4rem;
             color: white;
             background-color: #3498db;
             border: none;
             border-radius: 25px;
             text-decoration: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .button:hover {
@@ -58,26 +76,74 @@
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
         }
 
+        /* About Us section */
+        #about {
+            background-color: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            margin-top: 50px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #about h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        #about p {
+            font-size: 1.3rem;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* Footer styling */
         footer {
             margin-top: 50px;
             text-align: center;
-            font-size: 0.9rem;
-            color: #666;
+            font-size: 1rem;
+            color: #777;
+            padding: 20px 0;
+            background-color: #f1f1f1;
+            border-top: 2px solid #ddd;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: #2980b9;
         }
     </style>
 </head>
 <body>
 
+    <!-- Header -->
+    <header>
+        <h1>Welcome to CoolGlasses</h1>
+    </header>
+
     <!-- Main Content -->
     <div class="container">
         <h1>Shop for CoolGlasses</h1>
-        <p>Find the perfect eyewear for you!</p>
-        <!-- Add your products or shopping-related content here -->
+        <p>Find the perfect eyewear for you! Whether you're looking for a classic style or something trendy, we have it all. Explore our collection now.</p>
+        <a href="listprod.jsp" class="button">Shop Now</a>
+    </div>    
+
+    <!-- About Us Section -->
+    <div id="about">
+        <h2>About Us</h2>
+        <p>At CoolGlasses, we believe in offering eyewear that blends style, comfort, and affordability. Our mission is to provide you with glasses that not only improve your vision but also reflect your personality. With a diverse range of styles, we cater to every taste whether you prefer a bold statement or a timeless look. We pride ourselves on quality, customer satisfaction, and a seamless shopping experience.</p>
+        <p>We are committed to bringing you the best eyewear options, and our team is always here to help you find the perfect pair. Thank you for choosing CoolGlasses!</p>
     </div>
 
     <!-- Footer -->
     <footer>
-        &copy; 2024 CoolGlasses Inc. | Designed with a vision for the future
+        &copy; 2024 CoolGlasses Inc. | Designed with a vision for the future | <a href="#about">About Us</a>
     </footer>
 
 </body>
