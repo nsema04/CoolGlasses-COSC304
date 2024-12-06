@@ -166,6 +166,13 @@
         .next {
             right: 10px;
         }
+
+        /* Adjusted logo size in main content */
+        .logo img {
+            width: 100%; /* Set the width to match the "Shop For" header */
+            max-width: 300px; /* Adjust the max-width as needed */
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -216,7 +223,8 @@
 
     <!-- Main Content -->
     <div class="container">
-        <h1>Shop for CoolGlasses</h1>
+        <h1>Shop For</h1>
+        <div class="logo"> <img src="img/logoMain.png" alt="CoolGlasses Main Logo"> </div>
         <p>Find the perfect eyewear for you! Whether you're looking for a classic style or something trendy, we have it all. Explore our collection now.</p>
         <a href="listprod.jsp" class="button">Shop Now</a>
     </div>    
