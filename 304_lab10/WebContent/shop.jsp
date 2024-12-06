@@ -118,6 +118,54 @@
         footer a:hover {
             color: #2980b9;
         }
+
+        /* Carousel styling */
+        .carousel {
+            position: relative;
+            max-width: 800px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .carousel-container {
+            display: flex;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .carousel-item {
+            flex: 0 0 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 2rem;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            transform: translateY(-50%);
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -126,6 +174,45 @@
     <header>
         <h1>Welcome to CoolGlasses</h1>
     </header>
+
+    <!-- Carousel Section -->
+    <div class="carousel">
+        <h2>Featured Glasses</h2>
+        <div class="carousel-container">
+            <div class="carousel-item">
+                <img src="img/1.jpg" alt="Glasses 1">
+            </div>
+            <div class="carousel-item">
+                <img src="img/2.jpg" alt="Glasses 2">
+            </div>
+            <div class="carousel-item">
+                <img src="img/test.png" alt="Glasses 3">
+            </div>
+        </div>
+        <button class="carousel-btn prev" onclick="moveCarousel(-1)">&#10094;</button>
+        <button class="carousel-btn next" onclick="moveCarousel(1)">&#10095;</button>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const items = document.querySelectorAll('.carousel-item');
+        const totalItems = items.length;
+
+        function moveCarousel(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = totalItems - 1;
+            if (currentIndex >= totalItems) currentIndex = 0;
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            items.forEach((item, index) => {
+                item.style.display = (index === currentIndex) ? 'block' : 'none';
+            });
+        }
+
+        updateCarousel(); // Initialize the carousel
+    </script>
 
     <!-- Main Content -->
     <div class="container">

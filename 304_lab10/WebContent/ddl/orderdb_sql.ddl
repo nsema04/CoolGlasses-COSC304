@@ -264,3 +264,41 @@ UPDATE Product SET productImageURL = 'img/25.jpg' WHERE ProductId = 25;
 UPDATE Product SET productImageURL = 'img/26.jpg' WHERE ProductId = 26;
 UPDATE Product SET productImageURL = 'img/27.jpg' WHERE ProductId = 27;
 UPDATE Product SET productImageURL = 'img/28.jpg' WHERE ProductId = 28;
+
+-- Triggers for data validation
+CREATE TRIGGER tr_product_price
+ON product
+FOR INSERT, UPDATE
+AS
+BEGIN
+    IF EXISTS (SELECT * FROM inserted WHERE productPrice < 0)
+    BEGIN
+        RAISERROR ('Product price cannot be negative', 16, 1)
+        ROLLBACK TRANSACTION
+    END
+END
+
+CREATE TRIGGER tr_productinventory_quantity
+ON productinventory
+FOR INSERT, UPDATE
+AS
+BEGIN
+    IF EXISTS (SELECT * FROM inserted WHERE quantity < 0)
+    BEGIN
+        RAISERROR ('Product inventory quantity cannot be negative', 16, 1)
+        ROLLBACK TRANSACTION
+    END
+END
+
+CREATE TRIGGER tr_orderproduct_quantity
+
+ON orderproduct
+FOR INSERT, UPDATE
+AS
+BEGIN
+    IF EXISTS (SELECT * FROM inserted WHERE quantity < 0)
+    BEGIN
+        RAISERROR ('Order product quantity cannot be negative', 16, 1)
+        ROLLBACK TRANSACTION
+    END
+END
