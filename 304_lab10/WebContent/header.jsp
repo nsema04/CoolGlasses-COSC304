@@ -47,8 +47,19 @@
     <div class="header">
         <!-- Left Section: Admin Link + Logo -->
         <div style="display: flex; align-items: center;">
-            <!-- Admin Link -->
-            <a href="admin.jsp">Admin</a>
+            <!-- Admin Link (conditional based on login status) -->
+            <% 
+                String userName = (String) session.getAttribute("authenticatedUser");
+                if (userName != null) { // If the user is logged in, show the admin link to admin.jsp
+            %>
+                <a href="admin.jsp">Admin</a>
+            <% 
+                } else { // If not logged in, show the admin link to adminLogin.jsp
+            %>
+                <a href="adminLogin.jsp">Admin</a>
+            <% 
+                }
+            %>
 
             <!-- Logo -->
             <div class="logo">
@@ -61,8 +72,6 @@
             <a href="listprod.jsp">Shop</a>
             <a href="seeCart.jsp">Cart</a>
             <% 
-                // Dynamic user info and login/logout button
-                String userName = (String) session.getAttribute("authenticatedUser");
                 if (userName != null) { 
             %>
                 <span class="user-info">

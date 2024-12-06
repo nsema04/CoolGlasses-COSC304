@@ -1,9 +1,10 @@
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Login</title>
+    <title>Admin Login</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -35,14 +36,31 @@
         .text-center {
             text-align: center;
         }
+        .error-message {
+            color: red;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
 
 <div class="login-container">
-    <h3 class="text-center">User Login</h3>
+    <h3 class="text-center">Admin Login</h3>
+
+    <% 
+        // Check if user is already logged in as admin
+        if (session.getAttribute("adminLoggedIn") == null) {
+    %>
+        <p class="error-message text-center">You have not been authorized to access the admin dashboard.</p>
+    <% 
+        }
+    %>
 
     <form name="MyForm" method="post" action="validateLogin.jsp">
+        <!-- Hidden field to indicate admin login -->
+        <input type="hidden" name="fromAdminLogin" value="true">
+
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" class="form-control" size="10" maxlength="10" required>
@@ -59,7 +77,7 @@
     </form>
 
     <p class="text-center mt-3">No account? <a href="signup.jsp">Sign Up Here</a></p>
-    <p class="text-center mt-3">Are you an admin? <a href="adminLogin.jsp">Admin Login</a></p>
+    <p class="text-center mt-3">Not an admin? <a href="login.jsp">Go to User Login</a></p>
 </div>
 
 <!-- Bootstrap JS and Popper.js (required for Bootstrap components) -->
