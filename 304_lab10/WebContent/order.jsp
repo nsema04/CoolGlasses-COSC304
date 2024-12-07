@@ -218,7 +218,7 @@
         }
         catch (SQLException e)
         {
-            out.println("<h1>Error processing your order. Please try again.</h1>");
+            out.println("");
         }
     }
     %>
