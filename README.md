@@ -1,5 +1,8 @@
 # CoolGlasses-COSC304
 ## CoolGlasses
+
+Access the site at http://localhost/shop/shop.jsp (Ensure http://localhost/shop/loaddata.jsp is accessed first)
+
 Welcome to the CoolGlasses Glasses COmpany! This is a web application that showcases the ultimate eyewear shopping experience. Whether you're looking for stylish sunglasses, sleek prescription glasses, or fun novelty frames, CoolGlasses is here to help users find the perfect pair!
 
 ## Features
