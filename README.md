@@ -1,6 +1,6 @@
 # CoolGlasses-COSC304
 ## CoolGlasses
-Welcome to the CoolGlasses project! 😎 This is a web application that showcases the ultimate eyewear shopping experience. Whether you're looking for stylish sunglasses, sleek prescription glasses, or fun novelty frames, CoolGlasses is here to help users find the perfect pair!
+Welcome to the CoolGlasses Glasses COmpany! This is a web application that showcases the ultimate eyewear shopping experience. Whether you're looking for stylish sunglasses, sleek prescription glasses, or fun novelty frames, CoolGlasses is here to help users find the perfect pair!
 
 ## Features
 🌟 Account Creation: Users can sign up for an account to keep track of their orders and save their favorite glasses.
